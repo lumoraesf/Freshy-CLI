@@ -83,30 +83,24 @@ java -cp out freshy.Main
 
 Created automatically on first launch if `users.csv` is empty or missing:
 
-| Username    | Password    | Role   |
-|-------------|-------------|--------|
-| `admin`     | `admin123`  | ADMIN  |
-| `poweruser` | `power123`  | POWER  |
-| `user`      | `user123`   | NORMAL |
-
-> Passwords are stored as SHA-256 hashes in `users.csv`.
+| Username    | Role    |
+|-------------|---------|
+| `admin`     |  ADMIN  |
+| `poweruser` |  POWER  |
+| `user`      |  NORMAL |
 
 ---
 
 ## Features
 
-### Authentication
-- Maximum 3 attempts before automatic shutdown
-- Password is SHA-256 hashed before comparison
-
 ### Food CRUD
-| Option | Action |
-|--------|--------|
-| 1 | View all items (formatted table with EXPIRED / SOON / OK status) |
-| 2 | Add an item (name, category, quantity, unit, expiration date) |
-| 3 | Edit an item (leave blank = keep current value) |
-| 4 | Delete an item (confirmation required) |
-| 5 | View items expiring within ≤ 3 days |
+| Option | Action                                                           |
+|--------|------------------------------------------------------------------|
+| 1      | View all items (formatted table with EXPIRED / SOON / OK status) |
+| 2      | Add an item (name, category, quantity, unit, expiration date)    |
+| 3      | Edit an item (leave blank = keep current value)                  |
+| 4      | Delete an item (confirmation required)                           |
+| 5      | View items expiring within ≤ 3 days                              |
 
 ### Metrics (Power + Admin)
 - Total items in stock
@@ -116,10 +110,7 @@ Created automatically on first launch if `users.csv` is empty or missing:
 - Item with the nearest expiration date
 
 ### CSV export (Power + Admin)
-Generates a timestamped file in `exports/`:
-```
-exports/freshy_export_2026-03-20_14-30.csv
-```
+Generates a timestamped file in 'exports'
 
 ### User management (Admin only)
 - List all users (passwords hidden)
@@ -129,8 +120,6 @@ exports/freshy_export_2026-03-20_14-30.csv
 
 ### CSV import (Admin only)
 - Path to an external CSV file in `food_items.csv` format
-- Duplicate-free merge (based on ID)
-- Summary: X imported, Y skipped
 
 ---
 
@@ -157,16 +146,16 @@ exports/freshy_export_2026-03-20_14-30.csv
 id,name,category,quantity,unit,expirationDate,addedBy,addedDate
 ```
 
-| Field          | Type       | Possible values                 |
-|----------------|------------|---------------------------------|
-| id             | UUID       | Auto-generated                  |
-| name           | String     | Free text                       |
+| Field          | Type       | Possible values                      |
+|----------------|------------|--------------------------------------|
+| id             | UUID       | Auto-generated                       |
+| name           | String     | Free text                            |
 | category       | Enum       | Dairy, Meat, Vegetable, Fruit, Other |
-| quantity       | int        | > 0                             |
-| unit           | Enum       | kg, g, L, pieces                |
-| expirationDate | LocalDate  | YYYY-MM-DD                      |
-| addedBy        | String     | Username of the author          |
-| addedDate      | LocalDate  | YYYY-MM-DD (auto)               |
+| quantity       | int        | > 0                                  |
+| unit           | Enum       | kg, g, L, pieces                     |
+| expirationDate | LocalDate  | YYYY-MM-DD                           |
+| addedBy        | String     | Username of the author               |
+| addedDate      | LocalDate  | YYYY-MM-DD (auto)                    |
 
 ### `data/users.csv`
 ```
@@ -175,24 +164,14 @@ id,username,password,role,createdAt
 
 | Field     | Type      | Possible values             |
 |-----------|-----------|-----------------------------|
-| id        | UUID      | Auto-generated              |
-| username  | String    | Unique, case-insensitive    |
-| password  | String    | SHA-256 hash (64 hex chars) |
+| id        | double    | Auto-generated              |
+| username  | String    | Unique and case sensitive   |
+| password  | String    | Unique and case sensitive   |
 | role      | Enum      | NORMAL, POWER, ADMIN        |
 | createdAt | LocalDate | YYYY-MM-DD                  |
 
 ---
 
-## Automatic backup
-
-On every startup, `food_items.csv` is copied to `data/backups/`:
-```
-data/backups/food_items_backup_2026-03-20.csv
-```
-
-Only the **last 5 backups** are kept (older ones are deleted automatically).
-
----
 
 ## Technical architecture
 
@@ -211,8 +190,5 @@ Main
 - **Zero external dependencies**: `java.time`, `java.io/nio`, `java.security`, `java.util`
 - **Immediate persistence**: every modification (add/update/delete) flushes the CSV to disk
 - **Java inheritance**: `NormalUser → PowerUser → AdminUser` with overridden `canXxx()` methods
-- **Robustness**: all invalid inputs are caught without crashing (`NumberFormatException`, `DateTimeParseException`, `IllegalArgumentException`)
-
 ---
 
-*Freshy Solutions © 2026*
