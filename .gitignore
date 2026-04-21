@@ -9,7 +9,7 @@ products.csv
 logs.csv
 
 # Optional IntelliJ user-specific files
-workspace.xml
+.idea/workspace.xml
 shelf/
 httpRequests/
 dataSources/
