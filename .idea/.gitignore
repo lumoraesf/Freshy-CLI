@@ -10,3 +10,8 @@
 /httpRequests/
 # IntelliJs Compiler
 out/
+
+Users.csv
+products.csv
+.idea/
+*.iml
