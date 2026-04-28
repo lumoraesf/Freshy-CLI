@@ -1,0 +1,17 @@
+# IntelliJ
+.idea/
+*.iml
+out/
+
+# Local/generated data files
+Users.csv
+products.csv
+logs.csv
+
+# Optional IntelliJ user-specific files
+.idea/workspace.xml
+shelf/
+httpRequests/
+dataSources/
+dataSources.local.xml
+queries/
