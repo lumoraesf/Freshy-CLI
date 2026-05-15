@@ -28,7 +28,7 @@ public class AdminUser extends PowerUser {
             case "4": inv.modify(sc); break;
             case "5": inv.delete(sc); break;
             case "6": inv.printMetrics(); break;
-            case "7": acc.manageAccounts(sc); break;
+            case "7": acc.manageAccounts(sc, this.username); break;
             case "8": return false;
             default: System.out.println("Invalid option.");
         }

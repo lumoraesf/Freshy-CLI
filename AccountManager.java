@@ -69,7 +69,7 @@ public class AccountManager {
         }
     }
 
-    public void manageAccounts(Scanner sc) {
+    public void manageAccounts(Scanner sc, String loggedInUsername) {
         boolean running = true;
         while (running) {
             System.out.println("\n--- Manage Accounts ---");
@@ -82,7 +82,7 @@ public class AccountManager {
             switch (choice) {
                 case "1": listAccounts(); break;
                 case "2": createAccount(sc); break;
-                case "3": deleteAccount(sc); break;
+                case "3": deleteAccount(sc, loggedInUsername); break;
                 case "4": running = false; break;
                 default: System.out.println("Invalid option.");
             }
@@ -118,13 +118,17 @@ public class AccountManager {
         System.out.println("Account created.");
     }
 
-    private void deleteAccount(Scanner sc) {
+    private void deleteAccount(Scanner sc, String loggedInUsername) {
         listAccounts();
         if (accounts.isEmpty()) return;
         System.out.print("Account number to delete: ");
         try {
             int idx = Integer.parseInt(sc.nextLine().trim()) - 1;
             if (idx < 0 || idx >= accounts.size()) { System.out.println("Invalid number."); return; }
+            if (accounts.get(idx)[0].equals(loggedInUsername)) {
+                System.out.println("You cannot delete your own account.");
+                return;
+            }
             System.out.println("Deleted account: " + accounts.get(idx)[0]);
             accounts.remove(idx);
             saveToCSV();
